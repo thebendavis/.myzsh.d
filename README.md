@@ -1,0 +1,4 @@
+myzsh
+=====
+
+my zsh config
