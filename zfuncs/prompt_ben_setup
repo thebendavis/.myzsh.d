@@ -1,0 +1,89 @@
+# compute the abbreviated pwd, store locally
+function prompt_ben_pwd {
+    local shortpwd="${PWD/#$HOME/~}"
+
+    if [[ "$shortpwd" == '~' ]]; then
+        _prompt_ben_pwd="$shortpwd"
+    else
+        _prompt_ben_pwd="${${${(@j:/:M)${(@s:/:)shortpwd}##.#?}:h}%/}/${shortpwd:t}"
+    fi
+}
+
+# this is put in precmd to run every time
+function prompt_ben_precmd {
+    prompt_ben_pwd
+    vcs_info
+}
+
+# my prompt, using vcs_info for git status
+function prompt_ben_setup {
+    setopt PROMPT_SUBST
+
+    autoload -Uz vcs_info
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd prompt_ben_precmd
+
+    zstyle ':vcs_info:*' enable git
+    zstyle ':vcs_info:*' check-for-changes true
+    zstyle ':vcs_info:*' stagedstr '+'
+    zstyle ':vcs_info:*' unstagedstr '*'
+    zstyle ':vcs_info:*' formats \
+        '%F{green}%c%F{yellow}%u%m%f' \
+        '%F{blue}%s%F{white}:%F{green}%b'
+
+    zstyle ':vcs_info:*' actionformats \
+        '%F{green}%c%F{yellow}%u %F{red}(%a)%f' \
+        '%F{blue}%s%F{white}:%F{green}%b'
+
+    zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-st git-stash
+
+    # Show untracked files
+    +vi-git-untracked() {
+        if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+            git status --porcelain | grep '??' &> /dev/null ; then
+            hook_com[unstaged]+='%F{red}?%f'
+        fi
+    }
+
+    # Show remote ref name and number of commits ahead-of or behind
+    +vi-git-st() {
+        local ahead behind remote
+        local -a gitstatus
+
+        # Are we on a remote-tracking branch?
+        remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
+            --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+
+        if [[ -n ${remote} ]] ; then
+            # for git prior to 1.7
+            # ahead=$(git rev-list origin/${hook_com[branch]}..HEAD | wc -l)
+            ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l | sed -e 's/[[:blank:]]*//')
+            (( $ahead )) && gitstatus+=( "%F{green}${c3}+${ahead}${c2}%F{yellow}" )
+
+            # for git prior to 1.7
+            # behind=$(git rev-list HEAD..origin/${hook_com[branch]} | wc -l)
+            behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l | sed -e 's/[[:blank:]]*//')
+            (( $behind )) && gitstatus+=( "%F{red}${c4}-${behind}${c2}%f" )
+
+            local sttext
+            sttext=$(echo "${remote} ${(j:/:)gitstatus}" | sed -e 's/[[:blank:]]*$//')
+
+            hook_com[branch]="${hook_com[branch]} %F{yellow}[${sttext}%F{yellow}]"
+        fi
+    }
+
+    # Show count of stashed changes
+    +vi-git-stash() {
+        local -a stashes
+
+        if [[ -s ${hook_com[base]}/.git/refs/stash ]] ; then
+            stashes=$(git stash list 2>/dev/null | wc -l | sed -e 's/[[:blank:]]*//')
+            hook_com[misc]+="%F{cyan}[${stashes}^]%f"
+        fi
+    }
+
+    PROMPT='%F{magenta}%T %F{cyan}${_prompt_ben_pwd} ${vcs_info_msg_0_}%F{blue}> %f'
+    RPROMPT='%(?::%F{red}[%?]%f )${vcs_info_msg_1_}'
+}
+
+prompt_ben_setup "$@"

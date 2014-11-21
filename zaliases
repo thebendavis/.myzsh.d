@@ -1,0 +1,68 @@
+# aliases (sourced from .zshrc)
+
+## don't glob
+
+alias find='noglob find'
+alias ftp='noglob ftp'
+alias rsync='noglob rsync'
+alias scp='noglob scp'
+alias sftp='noglob sftp'
+
+
+## don't correct
+
+#alias grep='nocorrect grep'
+
+
+## don't clobber
+
+alias cp="${aliases[cp]:-cp} -i"
+alias mv="${aliases[mv]:-mv} -i"
+alias rm="${aliases[rm]:-rm} -i"
+
+
+## ls
+
+if is-callable 'dircolors'; then
+    # GNU Core Utilities
+    alias ls="${aliases[ls]:-ls} --group-directories-first"
+    alias ls="${aliases[ls]:-ls} --color=auto"
+else
+    # BSD Core Utilities
+    alias ls="${aliases[ls]:-ls} -G"
+fi
+
+alias la="${aliases[ls]:-ls} -lA"
+alias ll="${aliases[ls]:-ls} -lh"
+alias sl='ls'
+
+
+# programs
+
+## tmux
+
+alias tmux="${aliases[tmux]:-tmux} -2"
+alias t="${aliases[tmux]:-tmux} attach"
+alias ta="${aliases[tmux]:-tmux} attach-session -t"
+alias ts="${aliases[tmux]:-tmux} list-sessions"
+alias tn="${aliases[tmux]:-tmux} new-session -s"
+
+
+## emacs (also used in my VISUAL & EDITOR variables)
+
+### start in a new terminal frame
+myemacsc=('emacsclient' '-t' '--alternate-editor' '""')
+alias em="${myemacsc}"
+
+### start a windowed frame
+alias ec='emacsclient --alternate-editor "" -n -c'
+
+### do not start a new frame
+alias eopen='emacsclient --alternate-editor "" -n'
+
+
+## miscellaneous utilities
+
+### serve directory via HTTP
+
+alias http-serve='python -m SimpleHTTPServer'
