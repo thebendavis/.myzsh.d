@@ -74,6 +74,7 @@ setopt HIST_ALLOW_CLOBBER        # when NOCLOBBER blocks, convert > to >| in his
 # Completion
 ############################################################
 
+fpath=("${myzsh}/completions" $fpath)
 zmodload zsh/complist
 autoload -Uz compinit && compinit
 
