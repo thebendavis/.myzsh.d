@@ -1,0 +1,3 @@
+Copy or symlink completions here and they'll be loaded from `zshrc`. E.g.:
+
+    ln -s /path/to/etc/hub.zsh_completion ~/.myzsh/completions/_hub
