@@ -51,7 +51,7 @@ alias tn="${aliases[tmux]:-tmux} new-session -s"
 ## emacs (also used in my VISUAL & EDITOR variables)
 
 ### start in a new terminal frame
-myemacsc=('emacsclient' '-t' '--alternate-editor' '""')
+myemacsc=('emacsclient' '-c' '-t' '--alternate-editor' '""')
 alias em="${myemacsc}"
 
 ### start a windowed frame
