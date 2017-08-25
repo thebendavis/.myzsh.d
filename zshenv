@@ -18,7 +18,7 @@ ulimit -c 0
 ############################################################
 
 # the location of the directory containing my zsh files
-myzsh="${ZDOTDIR:-$HOME}/.myzsh"
+myzsh="${ZDOTDIR:-$HOME}/.myzsh.d"
 
 typeset -gU path           # no dupes in path, keep leftmost
 path=(~/bin $path)

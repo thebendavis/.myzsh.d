@@ -2,12 +2,12 @@
 
 Install with:
 
-    git clone --recursive https://github.com/thebendavis/myzsh.git ~/.myzsh
+    git clone --recursive https://github.com/thebendavis/.myzsh.d.git ~/.myzsh.d
 
-    ln -s ~/.myzsh/zshenv ~/.zshenv
-    ln -s ~/.myzsh/zshrc ~/.zshrc
+    ln -s ~/.myzsh.d/zshenv ~/.zshenv
+    ln -s ~/.myzsh.d/zshrc  ~/.zshrc
 
-If you install to somewhere other than `~/.myzsh`, adjust the `myzsh` value in `zshenv` accordingly.
+If you install to somewhere other than `~/.myzsh.d`, adjust the `myzsh` value in `zshenv` accordingly.
 
 
 ## Local Settings
