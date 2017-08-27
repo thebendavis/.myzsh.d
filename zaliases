@@ -63,6 +63,8 @@ alias eopen='emacsclient --alternate-editor "" -n'
 
 ## miscellaneous utilities
 
+alias agn="ag --no-numbers"
+
 ### serve directory via HTTP
 
 alias http-serve='python -m SimpleHTTPServer'
