@@ -83,7 +83,7 @@ function prompt_ben_setup {
     }
 
     PROMPT='%F{magenta}%T %F{cyan}${_prompt_ben_pwd} ${vcs_info_msg_0_}%F{blue}> %f'
-    RPROMPT='%(?::%F{red}[%?]%f )${vcs_info_msg_1_}'
+    RPROMPT='%(?::%F{red}[%?]%f )${vcs_info_msg_1_} %F{magenta}@%m'
 }
 
 prompt_ben_setup "$@"
