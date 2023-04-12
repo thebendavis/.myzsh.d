@@ -8,7 +8,7 @@
 export LANG=en_US.UTF-8
 
 # umask
-umask 0077
+#umask 0077
 
 # don't store core dumps
 ulimit -c 0
