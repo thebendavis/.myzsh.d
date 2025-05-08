@@ -9,8 +9,11 @@ setopt EXTENDEDGLOB              # lots of extra globbing features
 setopt BRACE_CCL                 # expand expressions in braces to a list of all chars
 
 # Escape URLs
-autoload -U url-quote-magic
+autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
+# needed as of zsh-5.1, see /usr/share/zsh/**/functions/**/url-quote-magic
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
 
 # Safety
 setopt NOCLOBBER                 # prevent accidential clobbering when doing stream redirection
